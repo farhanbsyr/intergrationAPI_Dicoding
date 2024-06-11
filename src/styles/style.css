@@ -153,6 +153,17 @@ textarea,
   font-size: 1.2rem;
 }
 
+.loading .btn-text {
+  display: none;
+}
+
+.btn-loading {
+  display: none;
+}
+.loading .btn-loading {
+  display: inline-block;
+}
+
 /* allnotes button */
 
 .check-button {

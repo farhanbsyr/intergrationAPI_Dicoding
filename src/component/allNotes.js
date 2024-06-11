@@ -11,6 +11,12 @@ class ListNotes extends HTMLElement {
     this.render();
   }
 
+  loading() {
+    setTimeout(() => {
+      console.log("loading");
+    }, 5000);
+  }
+
   async deleteData(note_Id) {
     try {
       const response = await fetch(`${ListNotes.baseURL}/notes/${note_Id}`, {
@@ -23,8 +29,9 @@ class ListNotes extends HTMLElement {
         throw new Error("ck erro bro ");
       }
       const data = await response.json();
+      this.fetchData = data;
+      this.render();
       console.log("sukses:", data);
-      this.fetchData();
     } catch (error) {
       console.error(error);
     }
@@ -36,7 +43,8 @@ class ListNotes extends HTMLElement {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      this._notes = await response.json();
+      const data = await response.json();
+      this._notes = data;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -138,7 +146,7 @@ class ListNotes extends HTMLElement {
                   <p>${note.data.createdAt}</p>
               </div>
               <div class="button">
-                  <button onClick ="document.querySelector('list-notes').deleteData('${note.data.id}')">delete</button>
+                  <button class="delete-button" data-id="${note.data.id}">delete</button>
               </div>
           
           </div>
@@ -151,6 +159,12 @@ class ListNotes extends HTMLElement {
                 ${notesHTML}
             </div>
         `;
+    this.querySelectorAll(".delete-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const noteId = button.getAttribute("data-id");
+        this.deleteData(noteId);
+      });
+    });
   }
 }
 

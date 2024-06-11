@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputBody = document.getElementById("deskripsi");
   const submitForm = document.getElementById("form");
   const baseURL = "https://notes-api.dicoding.dev/v2";
-
+  const btnSubmit = document.getElementById("btn-submit");
   submitForm.addEventListener("submit", async function (event) {
     event.preventDefault(event);
 
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: inputBody.value,
     };
 
+    btnSubmit.classList.add("loading");
     try {
       const response = await fetch("https://notes-api.dicoding.dev/v2/notes", {
         method: "POST",
@@ -36,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("error posting data", error);
+    } finally {
+      btnSubmit.classList.remove("loading");
     }
   });
 });
